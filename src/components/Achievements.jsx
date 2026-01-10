@@ -4,31 +4,35 @@ import Section from './Section'
 
 const Achievements = () => {
   const achievements = [
-    {
-      title: '1st Place',
-      event: 'HackAura 2025',
-      description: 'Won first place for Wolftor — AI STEM Tutor project',
-      icon: Trophy,
-      color: 'from-yellow-400 to-orange-500',
-      date: '2025',
-    },
-    {
-      title: 'Gold Trophy',
-      event: 'QCFI Competition',
-      description: 'Achieved gold trophy for SHIVA — Voice Task Assistant',
-      icon: Medal,
-      color: 'from-amber-400 to-yellow-500',
-      date: '2025',
-    },
-    {
-      title: 'Winner',
-      event: 'Technocrats Hackathon',
-      description: 'Secured top position in competitive hackathon event',
-      icon: Award,
-      color: 'from-purple-400 to-pink-500',
-      date: '2025',
-    },
-  ]
+  {
+    title: '1st Place',
+    event: 'HackAura 2025',
+    description: 'Won first place for Wolftor — AI STEM Tutor project',
+    icon: Trophy,
+    color: 'from-yellow-400 to-orange-500',
+    date: '2025',
+    certificate: 'https://certificate-link-hackaura.com', // 👈 add
+  },
+  {
+    title: 'Gold Trophy',
+    event: 'QCFI Competition',
+    description: 'Achieved gold trophy for SHIVA — Voice Task Assistant',
+    icon: Medal,
+    color: 'from-amber-400 to-yellow-500',
+    date: '2025',
+    certificate: 'https://certificate-link-qcfi.com',
+  },
+  {
+    title: 'Winner',
+    event: 'Technocrats Hackathon',
+    description: 'Secured top position in competitive hackathon event',
+    icon: Award,
+    color: 'from-purple-400 to-pink-500',
+    date: '2025',
+    certificate: 'https://certificate-link-technocrats.com',
+  },
+]
+
 
   return (
     <Section id="achievements">

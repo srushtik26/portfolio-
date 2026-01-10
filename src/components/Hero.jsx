@@ -107,7 +107,7 @@ const Hero = () => {
               transition={{ delay: 1, duration: 0.8 }}
             >
               <motion.a
-                href="https://github.com"
+                href="https://github.com/srushtik26"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-accent-blue transition-colors"
@@ -117,7 +117,7 @@ const Hero = () => {
                 <Github size={24} />
               </motion.a>
               <motion.a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/srushti-kadam-838685259/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-accent-blue transition-colors"
@@ -127,7 +127,7 @@ const Hero = () => {
                 <Linkedin size={24} />
               </motion.a>
               <motion.a
-                href="mailto:srushti@example.com"
+                href="mailto:srushtikadam26.sk@gmail.com"
                 className="text-gray-400 hover:text-accent-blue transition-colors"
                 whileHover={{ scale: 1.2, y: -3 }}
                 whileTap={{ scale: 0.9 }}

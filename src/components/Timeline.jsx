@@ -31,7 +31,7 @@ const Timeline = () => {
     {
       date: '2025',
       title: 'Winner - Technocrats Hackathon',
-      company: 'Multiple Projects',
+      company: 'JobSphere: Revolutionize Your Job Search',
       description: 'Secured top position in competitive hackathon with innovative solutions.',
       icon: Code,
       color: 'from-purple-500 to-pink-500',

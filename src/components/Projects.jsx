@@ -9,7 +9,7 @@ const Projects = () => {
       description:
         'An intelligent tutoring system leveraging AI to provide personalized STEM education. Features adaptive learning paths, real-time problem solving, and comprehensive analytics.',
       tech: ['Python', 'AI/ML', 'React', 'FastAPI'],
-      github: 'https://github.com',
+      github: 'https://github.com/Sparky17561/CodeCrusaders_OpenInnovation?tab=readme-ov-file',
       demo: 'https://wolftor.vercel.app/',
       award: '1st Place HackAura 2025',
       icon: Trophy,
@@ -20,19 +20,21 @@ const Projects = () => {
       title: 'SHIVA — Voice Task Assistant',
       description:
         'A sophisticated voice-powered task management assistant with natural language processing. Enables hands-free productivity through intelligent voice commands and context awareness.',
-      tech: ['Python', 'NLP', 'Voice Recognition', 'Django'],
-      github: 'https://github.com',
+      tech: ['Python', 'NLP', 'Voice Recognition'],
+      github: 'https://github.com/srushtik26/SHIVA',
+      demo: 'https://wolftor.vercel.app/',
       award: 'Gold Trophy QCFI',
       icon: Award,
       iconColor: 'text-purple-400',
       color: 'from-purple-500 to-pink-500',
     },
     {
-      title: 'Personal Finance Tracker Dashboard',
+      title: 'SkillSync is a MERN-stack peer skill exchange platform',
       description:
-        'A comprehensive financial analytics dashboard built with Power BI. Visualizes spending patterns, income trends, and provides actionable insights for better financial management.',
-      tech: ['Power BI', 'SQL', 'Data Analytics', 'DAX'],
-      github: 'https://github.com',
+        'A peer-to-peer skill exchange platform built with MERN stack. Matches users based on skills they offer and want to learn. Includes JWT authentication, protected routes, auto-matching logic, and a Vite-powered React frontend.',
+      tech: ['React', 'Node.js', 'MongoDB', 'Express'],
+      github: 'https://github.com/srushtik26/SkillSync-Peer-Skill-Exchange-Platform',
+      demo: 'https://wolftor.vercel.app/',
       award: null,
       icon: null,
       iconColor: '',
@@ -122,14 +124,19 @@ const Projects = () => {
                       <Github size={18} />
                       Code
                     </motion.a>
-                    <motion.a
-                      href="#"
-                      className="flex items-center gap-2 text-gray-400 hover:text-accent-purple transition-colors text-sm font-medium"
-                      whileHover={{ x: 5 }}
-                    >
-                      <ExternalLink size={18} />
-                      Demo
-                    </motion.a>
+                    {project.demo && (
+                      <motion.a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-gray-400 hover:text-accent-purple transition-colors text-sm font-medium"
+                        whileHover={{ x: 5 }}
+                      >
+                        <ExternalLink size={18} />
+                        Demo
+                      </motion.a>
+                    )}
+
                   </div>
                 </div>
               </motion.div>
