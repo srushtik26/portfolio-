@@ -62,7 +62,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              Software Engineer • Java • FinTech & Frontend
+              Software Engineer •  Java Developer • Tech Enthusiast
             </motion.p>
 
             <motion.p

@@ -59,7 +59,7 @@ const FeaturedExperience = () => {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              {['Java', 'Spring Boot', 'Microservices', 'FinTech', 'SQL'].map((tech) => (
+              {['Java', 'Spring Boot', 'Tomcat', 'FinTech', 'SQL'].map((tech) => (
                 <motion.span
                   key={tech}
                   className="px-4 py-2 bg-accent-blue/10 border border-accent-blue/30 rounded-full text-sm text-accent-blue font-medium"

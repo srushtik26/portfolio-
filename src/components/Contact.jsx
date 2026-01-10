@@ -159,7 +159,7 @@ const Contact = () => {
 
                   <div className="space-y-4">
                     <motion.a
-                      href="https://linkedin.com"
+                      href="https://www.linkedin.com/in/srushti-kadam-838685259/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-4 p-4 glass rounded-lg border border-white/10 hover:border-accent-blue/50 transition-all duration-300 group"
@@ -175,7 +175,7 @@ const Contact = () => {
                     </motion.a>
 
                     <motion.a
-                      href="https://github.com"
+                      href="https://github.com/srushtik26"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-4 p-4 glass rounded-lg border border-white/10 hover:border-accent-purple/50 transition-all duration-300 group"
@@ -191,7 +191,7 @@ const Contact = () => {
                     </motion.a>
 
                     <motion.a
-                      href="mailto:srushti@example.com"
+                      href="mailto:srushtikadam26.sk@gmail.com"
                       className="flex items-center gap-4 p-4 glass rounded-lg border border-white/10 hover:border-accent-blue/50 transition-all duration-300 group"
                       whileHover={{ x: 5, scale: 1.02 }}
                     >
@@ -200,7 +200,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <p className="font-semibold text-white">Email</p>
-                        <p className="text-sm text-gray-400">srushti@example.com</p>
+                        <p className="text-sm text-gray-400">srushtikadam26.sk@gmail.com</p>
                       </div>
                     </motion.a>
                   </div>

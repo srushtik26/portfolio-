@@ -30,7 +30,7 @@ const About = () => {
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent-blue/20 via-accent-purple/20 to-accent-blue/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out"></div>
                   {/* Image with premium hover effects */}
                   <img
-                    src="/assets/profile.jpg"
+                    src="/assets/image/meee.jpeg"
                     alt="Srushti Kadam"
                     className="profile-image relative w-full h-auto rounded-2xl object-cover group-hover:scale-[1.05] group-hover:shadow-2xl group-hover:shadow-accent-purple/40"
                   />

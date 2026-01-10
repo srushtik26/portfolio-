@@ -10,6 +10,7 @@ const Projects = () => {
         'An intelligent tutoring system leveraging AI to provide personalized STEM education. Features adaptive learning paths, real-time problem solving, and comprehensive analytics.',
       tech: ['Python', 'AI/ML', 'React', 'FastAPI'],
       github: 'https://github.com',
+      demo: 'https://wolftor.vercel.app/',
       award: '1st Place HackAura 2025',
       icon: Trophy,
       iconColor: 'text-yellow-400',
