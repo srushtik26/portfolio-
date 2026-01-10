@@ -22,6 +22,15 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-accent-purple;
   }
+
+  .profile-image {
+    filter: grayscale(100%);
+    transition: filter 700ms ease-in-out, transform 700ms ease-in-out, box-shadow 700ms ease-in-out;
+  }
+
+  .group:hover .profile-image {
+    filter: grayscale(0%);
+  }
 }
 
 /* Custom scrollbar */

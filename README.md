@@ -67,6 +67,14 @@ Update the content in each component file to personalize:
 - `src/components/Projects.jsx` - Project cards
 - `src/components/Contact.jsx` - Contact information
 
+### Profile Image
+
+To add your profile image to the About section:
+1. Place your image file as `profile.jpg` in the `public/assets/` folder
+2. The image will automatically appear with a premium hover effect (grayscale to color transition)
+3. Supported formats: JPG, PNG, WebP
+4. Recommended size: 400x500px or larger (will be scaled responsively)
+
 ## License
 
 MIT
