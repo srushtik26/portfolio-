@@ -46,11 +46,10 @@ const About = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                 >
-                  I'm a passionate Software Engineer with a strong foundation in Java development
-                  and a growing expertise in frontend technologies. Currently interning at the Bombay
-                  Stock Exchange, I'm working on critical financial systems that process millions of
-                  transactions daily, which has taught me the importance of writing robust, scalable,
-                  and performant code.
+                Hi, I’m a Software Engineer who gets way too excited when a bug finally disappears.
+                 I started with Java, fell in love with problem-solving, and somehow ended up enjoying 
+                 both backend logic and frontend polish. Curiosity is my default mode, and breaking
+                  things (then fixing them) is how I learn best.
                 </motion.p>
 
                 <motion.p
@@ -60,11 +59,12 @@ const About = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.5 }}
                 >
-                  My journey in tech has been driven by curiosity and a desire to solve real-world
-                  problems. From building AI-powered educational tools that won hackathons to
-                  developing voice assistants and financial analytics dashboards, I enjoy the
-                  challenge of turning complex ideas into elegant, user-friendly solutions.
-                </motion.p>
+                I like turning wild ideas into working, shippable products.
+                Think AI-powered tools that win hackathons, voice assistants that actually listen,
+                 and financial dashboards that make numbers make sense.
+                Currently interning at the Bombay Stock Exchange, where I help build systems that 
+                handle millions of transactions daily — aka code where mistakes are ✨not✨ allowed.
+                                </motion.p>
 
                 <motion.p
                   className="text-lg md:text-xl text-gray-300 leading-relaxed"
@@ -73,10 +73,10 @@ const About = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.7 }}
                 >
-                  When I'm not coding, you'll find me exploring new frameworks, contributing to
+                  {/* When I'm not coding, you'll find me exploring new frameworks, contributing to
                   open-source projects, or diving deep into algorithms and data structures. I believe
                   in continuous learning and staying updated with the latest industry trends, whether
-                  it's FinTech innovations, modern frontend patterns, or cutting-edge AI technologies.
+                  it's FinTech innovations, modern frontend patterns, or cutting-edge AI technologies. */}
                 </motion.p>
               </div>
             </div>
