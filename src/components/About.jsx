@@ -73,10 +73,8 @@ const About = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.7 }}
                 >
-                  {/* When I'm not coding, you'll find me exploring new frameworks, contributing to
-                  open-source projects, or diving deep into algorithms and data structures. I believe
-                  in continuous learning and staying updated with the latest industry trends, whether
-                  it's FinTech innovations, modern frontend patterns, or cutting-edge AI technologies. */}
+              When I’m not coding, I’m probably exploring a new framework, diving into DSA, or obsessing over FinTech, 
+              frontend trends, and AI — always learning, building, and trying not to break production 🚀
                 </motion.p>
               </div>
             </div>
