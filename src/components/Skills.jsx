@@ -29,13 +29,16 @@ const Skills = () => {
         { name: 'Spring Boot', icon: Server, color: 'from-green-400 to-emerald-400' },
         { name: 'Django', icon: Server, color: 'from-green-500 to-teal-500' },
         { name: 'Python', icon: Code2, color: 'from-yellow-400 to-blue-400' },
+        { name: 'REST APIs', icon: Server, color: 'from-sky-400 to-cyan-400' },
       ],
     },
     {
       category: 'Database & Tools',
       skills: [
         { name: 'MySQL', icon: Database, color: 'from-blue-400 to-indigo-400' },
+        { name: 'SQLite', icon: Database, color: 'from-green-400 to-emerald-400' },
         { name: 'Git', icon: GitBranch, color: 'from-orange-400 to-red-400' },
+        { name: 'GitHub Actions', icon: Zap, color: 'from-violet-400 to-purple-500' },
         { name: 'Power BI', icon: Zap, color: 'from-yellow-400 to-amber-400' },
         { name: 'Terminal', icon: Terminal, color: 'from-gray-400 to-gray-600' },
       ],
@@ -53,8 +56,8 @@ const Skills = () => {
     <Section id="skills" className="bg-dark-secondary/30">
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
@@ -79,10 +82,15 @@ const Skills = () => {
                     <motion.div
                       key={skill.name}
                       className="glass rounded-xl p-4 border border-white/10 hover:border-white/30 transition-all duration-300 group cursor-pointer"
-                      initial={{ opacity: 0, scale: 0.8 }}
+                      initial={{ opacity: 0, scale: 0.5 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: (categoryIndex * 0.1) + (index * 0.05) }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 260,
+                        damping: 15,
+                        delay: index * 0.08,
+                      }}
                       whileHover={{ y: -5, scale: 1.05 }}
                     >
                       <div className="flex flex-col items-center gap-3 min-w-[100px]">

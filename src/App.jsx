@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { motion, useScroll, useSpring } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -8,8 +9,16 @@ import Skills from './components/Skills'
 import Achievements from './components/Achievements'
 import Timeline from './components/Timeline'
 import Contact from './components/Contact'
+import CustomCursor from './components/CustomCursor'
 
 function App() {
+  const { scrollYProgress } = useScroll()
+  const progressBarScale = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 25,
+    mass: 0.25,
+  })
+
   useEffect(() => {
     // Smooth scroll behavior for anchor links
     const handleAnchorClick = (e) => {
@@ -33,6 +42,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-dark">
+      <motion.div
+        className="fixed inset-x-0 top-0 z-50 h-[3px] origin-left bg-gradient-to-r from-accent-blue to-accent-purple"
+        style={{ scaleX: progressBarScale }}
+      />
+      <CustomCursor />
       <Navbar />
       <main>
         <Hero />

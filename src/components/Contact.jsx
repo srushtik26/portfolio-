@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send, Github, Linkedin, Mail, MessageCircle } from 'lucide-react'
+import confetti from 'canvas-confetti'
+import { Send, Github, Linkedin, Mail, MessageCircle, Check } from 'lucide-react'
 import Section from './Section'
+import MagneticButton from './MagneticButton'
 
 const Contact = () => {
+  const submitButtonRef = useRef(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,6 +14,7 @@ const Contact = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+  const [showSuccessState, setShowSuccessState] = useState(false)
 
   const handleChange = (e) => {
     setFormData({
@@ -28,11 +32,26 @@ const Contact = () => {
     setTimeout(() => {
       setIsSubmitting(false)
       setSubmitStatus('success')
+      setShowSuccessState(true)
       setFormData({ name: '', email: '', message: '' })
-      
+
+      if (submitButtonRef.current) {
+        const rect = submitButtonRef.current.getBoundingClientRect()
+        const originX = (rect.left + rect.width / 2) / window.innerWidth
+        const originY = (rect.top + rect.height / 2) / window.innerHeight
+
+        confetti({
+          particleCount: 90,
+          spread: 65,
+          origin: { x: originX, y: originY },
+          colors: ['#60a5fa', '#a78bfa', '#f0abfc', '#ffffff'],
+        })
+      }
+
       setTimeout(() => {
+        setShowSuccessState(false)
         setSubmitStatus(null)
-      }, 3000)
+      }, 2000)
     }, 1000)
   }
 
@@ -41,8 +60,8 @@ const Contact = () => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
@@ -63,10 +82,7 @@ const Contact = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                    Name
-                  </label>
+                <div className="relative">
                   <input
                     type="text"
                     id="name"
@@ -74,15 +90,21 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-purple/50 focus:ring-2 focus:ring-accent-purple/20 transition-all"
-                    placeholder="Your name"
+                    placeholder=" "
+                    className="peer w-full px-4 pt-6 pb-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-transparent focus:outline-none focus:border-accent-purple/50 focus:ring-2 focus:ring-accent-purple/20 transition-all"
                   />
+                  <label
+                    htmlFor="name"
+                    className={`pointer-events-none absolute left-4 top-3 text-gray-400 transition-all duration-200 ${
+                      formData.name ? 'top-2 text-xs text-accent-blue' : 'peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-accent-blue'
+                    }`}
+                  >
+                    Name
+                  </label>
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-accent-blue to-accent-purple origin-left scale-x-0 transition-transform duration-300 peer-focus:scale-x-100" />
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                    Email
-                  </label>
+                <div className="relative">
                   <input
                     type="email"
                     id="email"
@@ -90,15 +112,21 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-purple/50 focus:ring-2 focus:ring-accent-purple/20 transition-all"
-                    placeholder="your.email@example.com"
+                    placeholder=" "
+                    className="peer w-full px-4 pt-6 pb-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-transparent focus:outline-none focus:border-accent-purple/50 focus:ring-2 focus:ring-accent-purple/20 transition-all"
                   />
+                  <label
+                    htmlFor="email"
+                    className={`pointer-events-none absolute left-4 top-3 text-gray-400 transition-all duration-200 ${
+                      formData.email ? 'top-2 text-xs text-accent-blue' : 'peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-accent-blue'
+                    }`}
+                  >
+                    Email
+                  </label>
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-accent-blue to-accent-purple origin-left scale-x-0 transition-transform duration-300 peer-focus:scale-x-100" />
                 </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                    Message
-                  </label>
+                <div className="relative">
                   <textarea
                     id="message"
                     name="message"
@@ -106,29 +134,63 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows="5"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-purple/50 focus:ring-2 focus:ring-accent-purple/20 transition-all resize-none"
-                    placeholder="Your message..."
+                    placeholder=" "
+                    className="peer w-full px-4 pt-6 pb-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-transparent focus:outline-none focus:border-accent-purple/50 focus:ring-2 focus:ring-accent-purple/20 transition-all resize-none"
                   />
+                  <label
+                    htmlFor="message"
+                    className={`pointer-events-none absolute left-4 top-3 text-gray-400 transition-all duration-200 ${
+                      formData.message ? 'top-2 text-xs text-accent-blue' : 'peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-accent-blue'
+                    }`}
+                  >
+                    Message
+                  </label>
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-accent-blue to-accent-purple origin-left scale-x-0 transition-transform duration-300 peer-focus:scale-x-100" />
                 </div>
 
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-purple text-white rounded-lg font-semibold shadow-lg shadow-accent-purple/50 hover:shadow-xl hover:shadow-accent-purple/60 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  whileHover={{ scale: isSubmitting ? 1 : 1.02, y: isSubmitting ? 0 : -2 }}
-                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                >
-                  {isSubmitting ? (
-                    'Sending...'
+                <div ref={submitButtonRef}>
+                  {showSuccessState ? (
+                    <motion.div
+                      className="w-full px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg font-semibold shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <motion.svg
+                        viewBox="0 0 24 24"
+                        className="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 0.35, ease: 'easeOut' }}
+                      >
+                        <motion.path d="M5 12.5l4.2 4.2L19 2.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} />
+                      </motion.svg>
+                      Sent!
+                    </motion.div>
                   ) : (
-                    <>
-                      <Send size={20} />
-                      Send Message
-                    </>
+                    <MagneticButton
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-purple text-white rounded-lg font-semibold shadow-lg shadow-accent-purple/50 hover:shadow-xl hover:shadow-accent-purple/60 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {isSubmitting ? (
+                        'Sending...'
+                      ) : (
+                        <>
+                          <Send size={20} />
+                          Send Message
+                        </>
+                      )}
+                    </MagneticButton>
                   )}
-                </motion.button>
+                </div>
 
-                {submitStatus === 'success' && (
+                {submitStatus === 'success' && !showSuccessState && (
                   <motion.p
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}

@@ -5,10 +5,18 @@ import Section from './Section'
 const Timeline = () => {
   const timelineEvents = [
     {
-      date: 'Jan 2026 - Present',
-      title: 'Software Engineering Intern',
+      date: 'Aug 2026 - Present',
+      title: 'AI Automation Intern',
+      company: 'Plutus Wealth Management LLP',
+      description: 'Building an automated investment news pipeline with AI classification and multi-channel delivery.',
+      icon: Briefcase,
+      color: 'from-indigo-500 to-blue-500',
+    },
+    {
+      date: 'Jan 2026 - Jul 2026',
+      title: 'SMOP Intern (Java)',
       company: 'Bombay Stock Exchange (BSE)',
-      description: 'Working on critical financial systems and high-performance applications in FinTech.',
+      description: 'Built Java backend components for derivatives market processing and production data validation in a FinTech environment.',
       icon: Briefcase,
       color: 'from-blue-500 to-cyan-500',
     },
@@ -36,22 +44,22 @@ const Timeline = () => {
       icon: Code,
       color: 'from-purple-500 to-pink-500',
     },
-    {
-      date: '2024 - 2025',
-      title: 'Personal Finance Tracker',
-      company: 'Power BI Dashboard',
-      description: 'Created comprehensive financial analytics dashboard with data visualization.',
-      icon: Code,
-      color: 'from-green-500 to-teal-500',
-    },
+    // {
+    //   date: '2024 - 2025',
+    //   title: 'Personal Finance Tracker',
+    //   company: 'Power BI Dashboard',
+    //   description: 'Created comprehensive financial analytics dashboard with data visualization.',
+    //   icon: Code,
+    //   color: 'from-green-500 to-teal-500',
+    // },
   ]
 
   return (
     <Section id="timeline" className="bg-dark-secondary/50">
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
@@ -61,7 +69,13 @@ const Timeline = () => {
 
           <div className="max-w-4xl mx-auto relative">
             {/* Timeline line */}
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-accent-blue via-accent-purple to-accent-blue md:-translate-x-1/2"></div>
+            <motion.div
+              className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-accent-blue via-accent-purple to-accent-blue md:-translate-x-1/2 origin-top"
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.8, ease: 'easeInOut' }}
+            />
 
             <div className="space-y-12">
               {timelineEvents.map((event, index) => (
@@ -77,6 +91,13 @@ const Timeline = () => {
                 >
                   {/* Timeline dot */}
                   <div className="relative z-10 flex-shrink-0">
+                    {index === 0 && (
+                      <motion.div
+                        className="absolute inset-[-10px] rounded-full border border-accent-blue/60"
+                        animate={{ scale: [1, 1.4, 1.7], opacity: [0.6, 0.25, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
+                      />
+                    )}
                     <motion.div
                       className={`w-16 h-16 rounded-full bg-gradient-to-br ${event.color} flex items-center justify-center shadow-lg`}
                       whileHover={{ scale: 1.2, rotate: 360 }}

@@ -4,42 +4,50 @@ import Section from './Section'
 
 const Achievements = () => {
   const achievements = [
-  {
-    title: '1st Place',
-    event: 'HackAura 2025',
-    description: 'Won first place for Wolftor — AI STEM Tutor project',
-    icon: Trophy,
-    color: 'from-yellow-400 to-orange-500',
-    date: '2025',
-    certificate: 'https://certificate-link-hackaura.com', // 👈 add
-  },
-  {
-    title: 'Gold Trophy',
-    event: 'QCFI Competition',
-    description: 'Achieved gold trophy for SHIVA — Voice Task Assistant',
-    icon: Medal,
-    color: 'from-amber-400 to-yellow-500',
-    date: '2025',
-    certificate: 'https://certificate-link-qcfi.com',
-  },
-  {
-    title: 'Winner',
-    event: 'Technocrats Hackathon',
-    description: 'Secured top position in competitive hackathon event',
-    icon: Award,
-    color: 'from-purple-400 to-pink-500',
-    date: '2025',
-    certificate: 'https://certificate-link-technocrats.com',
-  },
-]
-
+    {
+      title: '1st Place',
+      event: 'HackAura 2025',
+      description: 'Won first place for Wolftor — AI STEM Tutor project',
+      icon: Trophy,
+      color: 'from-yellow-400 to-orange-500',
+      date: '2025',
+      certificate: 'https://certificate-link-hackaura.com',
+    },
+    {
+      title: 'Gold Trophy',
+      event: 'QCFI Competition',
+      description: 'Achieved gold trophy for SHIVA — Voice Task Assistant',
+      icon: Medal,
+      color: 'from-amber-400 to-yellow-500',
+      date: '2025',
+      certificate: 'https://certificate-link-qcfi.com',
+    },
+    {
+      title: 'Winner',
+      event: 'Technocrats Hackathon',
+      description: 'Secured top position in competitive hackathon event',
+      icon: Award,
+      color: 'from-purple-400 to-pink-500',
+      date: '2025',
+      certificate: 'https://certificate-link-technocrats.com',
+    },
+    {
+      title: 'Winner',
+      event: 'HackFest Innov8 TMRW 2026 (VIT)',
+      description: 'Recognized for innovation, technical excellence, and impactful problem-solving in a competitive hackathon at VIT',
+      icon: Trophy,
+      color: 'from-cyan-400 to-blue-500',
+      date: '2026',
+      certificate: 'https://certificate-link-hackfest-innov8.com',
+    },
+  ]
 
   return (
     <Section id="achievements">
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
@@ -47,7 +55,7 @@ const Achievements = () => {
             Achievements
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {achievements.map((achievement, index) => (
               <motion.div
                 key={achievement.event}
@@ -58,6 +66,13 @@ const Achievements = () => {
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 whileHover={{ y: -8, scale: 1.03 }}
               >
+                <motion.div
+                  className="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 group-hover:opacity-100"
+                  initial={{ x: '-100%' }}
+                  whileHover={{ x: '200%' }}
+                  transition={{ duration: 0.8, ease: 'easeInOut' }}
+                />
+
                 {/* Gradient overlay */}
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${achievement.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
