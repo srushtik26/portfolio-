@@ -570,6 +570,36 @@ h1, h2, h3, p { margin-top: 0; }
 .footer-inner a { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); }
 .footer-inner a:hover { color: var(--pink-soft); }
 
+.terminal-launcher { position: fixed; z-index: 85; right: 22px; bottom: 20px; min-height: 38px; display: inline-flex; align-items: center; gap: 8px; padding: 0 11px; border: 1px solid rgba(255,117,188,.38); border-radius: 999px; color: #ead7e4; background: rgba(18,12,20,.94); box-shadow: 0 8px 28px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.04); font: 10px var(--mono); cursor: pointer; backdrop-filter: blur(12px); transition: border-color .2s ease, color .2s ease, transform .2s ease; }
+.terminal-launcher:hover { transform: translateY(-2px); border-color: var(--pink); color: #fff; }
+.terminal-launcher > svg { color: var(--pink-soft); }
+.terminal-launcher kbd { min-width: 17px; padding: 2px 4px; border: 1px solid #604452; border-radius: 4px; color: #bda9b9; background: #1c141d; font: 9px var(--mono); text-align: center; }
+.terminal-backdrop { position: fixed; z-index: 120; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(4,3,6,.76); backdrop-filter: blur(8px); }
+.terminal-window { width: min(620px, 100%); overflow: hidden; border: 1px solid rgba(255,117,188,.35); border-radius: 12px; background: #0c0a0f; box-shadow: 0 24px 90px rgba(0,0,0,.7), 0 0 55px rgba(255,63,157,.08); }
+.terminal-header { min-height: 43px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 12px; border-bottom: 1px solid #30202d; background: #151018; }
+.terminal-lights { display: flex; gap: 5px; }
+.terminal-lights i { width: 7px; height: 7px; border-radius: 50%; background: #ff6f7d; }
+.terminal-lights i:nth-child(2) { background: #f2c36e; }
+.terminal-lights i:nth-child(3) { background: #78d59c; }
+.terminal-header h2 { display: inline-flex; align-items: center; gap: 7px; margin: 0; color: #d9c6d5; font: 10px var(--mono); }
+.terminal-header h2 svg { color: var(--pink-soft); }
+.terminal-close { justify-self: end; width: 28px; height: 28px; display: grid; place-items: center; border: 0; border-radius: 5px; color: #a996a6; background: transparent; cursor: pointer; }
+.terminal-close:hover { color: #fff; background: #332331; }
+.terminal-log { min-height: 190px; max-height: min(52vh, 390px); overflow: auto; padding: 17px 18px 10px; scrollbar-color: #624257 #100c12; }
+.terminal-line { margin: 0 0 10px; color: #c9bdc9; font: 11px/1.7 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.terminal-line-command { color: #f2d7e7; }
+.terminal-line-command span { color: #ff75bc; }
+.terminal-line-output { padding-left: 13px; color: #b4a5b4; }
+.terminal-form { min-height: 44px; display: flex; align-items: center; gap: 9px; margin: 0 14px; padding: 0 10px; border: 1px solid #483043; border-radius: 6px; background: #110d13; }
+.terminal-form label { color: var(--pink); font: 12px var(--mono); }
+.terminal-form input { min-width: 0; flex: 1; border: 0; outline: 0; color: #f8f4f8; background: transparent; font: 11px var(--mono); }
+.terminal-form input::placeholder { color: #766879; }
+.terminal-form button { width: 27px; height: 27px; display: grid; place-items: center; border: 0; border-radius: 4px; color: #f4bad7; background: #382033; cursor: pointer; }
+.terminal-form button:hover { color: #fff; background: #672e51; }
+.terminal-footer { display: flex; justify-content: center; gap: 7px; padding: 11px 8px 12px; color: #746978; font: 8px var(--mono); }
+.terminal-footer span { color: #b95688; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
+
 @media (max-width: 1050px) {
   .nav-shell { gap: 17px; }
   .nav-links { gap: 13px; }
@@ -682,6 +712,11 @@ h1, h2, h3, p { margin-top: 0; }
   .quote-card { grid-column: auto; }
   .contact-links { grid-template-columns: 1fr; }
   .footer-inner { align-items: flex-start; padding-block: 14px; }
+  .terminal-launcher { right: 12px; bottom: 12px; min-height: 36px; }
+  .terminal-backdrop { padding: 12px; }
+  .terminal-header h2 { font-size: 9px; }
+  .terminal-log { min-height: 170px; padding-inline: 13px; }
+  .terminal-line { font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

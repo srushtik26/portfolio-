@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -16,6 +16,7 @@ import {
   Menu,
   Shuffle,
   Sparkles,
+  Terminal as TerminalIcon,
   Trophy,
   X,
 } from 'lucide-react'
@@ -488,11 +489,185 @@ function Contact() {
   )
 }
 
+function DeveloperTerminal({ onBlossom }) {
+  const [open, setOpen] = useState(false)
+  const [command, setCommand] = useState('')
+  const [history, setHistory] = useState([
+    { type: 'output', text: 'Welcome to Srushti’s little corner of the internet. Type “help” to explore.' },
+  ])
+  const inputRef = useRef(null)
+  const logRef = useRef(null)
+  const launcherRef = useRef(null)
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
+
+  useEffect(() => {
+    const handleShortcut = (event) => {
+      if (open) {
+        if (event.key === 'Escape') {
+          event.preventDefault()
+          setOpen(false)
+          launcherRef.current?.focus()
+        } else if (event.key === 'Tab') {
+          const focusable = document.querySelectorAll('.terminal-window button, .terminal-window input')
+          const first = focusable[0]
+          const last = focusable[focusable.length - 1]
+
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault()
+            last?.focus()
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault()
+            first?.focus()
+          }
+        }
+        return
+      }
+
+      const target = event.target
+      const isTyping = target instanceof HTMLElement
+        && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))
+
+      if (event.key === '/' && !event.altKey && !event.ctrlKey && !event.metaKey && !isTyping) {
+        event.preventDefault()
+        setOpen(true)
+      }
+    }
+
+    window.addEventListener('keydown', handleShortcut)
+    return () => window.removeEventListener('keydown', handleShortcut)
+  }, [open])
+
+  useEffect(() => {
+    if (open && logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight
+  }, [history, open])
+
+  const closeTerminal = () => {
+    setOpen(false)
+    launcherRef.current?.focus()
+  }
+
+  const runCommand = (event) => {
+    event.preventDefault()
+    const entered = command.trim()
+    if (!entered) return
+
+    const normalized = entered.toLowerCase()
+    const allSkills = [...new Set(skillItems)]
+    let response
+
+    switch (normalized) {
+      case 'help':
+        response = 'Available commands:\nhelp · about · projects · skills · achievements · contact · clear\nThere may be a few other things to discover...'
+        break
+      case 'about':
+        response = 'I’m Srushti Kadam, a software engineer and Electronics & Computer Science student at Shah & Anchor Kutchhi Engineering College, specializing in AI/ML. I enjoy building practical software across backend, frontend, and AI—from an AI STEM tutor to automation tools. I’m always learning, building, and looking for the next interesting problem to solve.'
+        break
+      case 'projects':
+        response = projects.map((project, index) => `${String(index + 1).padStart(2, '0')}  ${project.name} — ${project.description}`).join('\n')
+        break
+      case 'skills':
+        response = allSkills.join('  ·  ')
+        break
+      case 'achievements':
+        response = achievements.map((achievement) => `${achievement.title} — ${achievement.event} (${achievement.project})`).join('\n')
+        break
+      case 'contact':
+        response = `Email: ${profile.email}\nGitHub: ${profile.github}\nLinkedIn: ${profile.linkedin}`
+        break
+      case 'coffee':
+        response = '☕ Virtual coffee acquired. Real coffee still requires a human and a kettle.'
+        break
+      case 'blossom':
+        onBlossom()
+        response = 'A little spring for your screen. 🌸'
+        break
+      case '42':
+        response = 'The answer is 42. The question is probably “what should I build next?”'
+        break
+      case 'sudo':
+        response = 'Nice try! This terminal only knows portfolio commands. No system commands are executed here.'
+        break
+      case 'saiprasad':
+        response = 'Saiprasad is my boyfriend, and I love you! ❤️'
+        break
+      case 'clear':
+        setHistory([])
+        setCommand('')
+        return
+      default:
+        response = `Command not found: ${entered}\nThis terminal is sandboxed. Type “help” to see the available commands.`
+    }
+
+    setHistory((entries) => [...entries, { type: 'command', text: entered }, { type: 'output', text: response }].slice(-100))
+    setCommand('')
+  }
+
+  return (
+    <>
+      <button
+        ref={launcherRef}
+        className="terminal-launcher"
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label="Open secret developer terminal"
+        title="Developer terminal · press /"
+      >
+        <TerminalIcon size={16} />
+        <span>Terminal</span>
+        <kbd>/</kbd>
+      </button>
+      {open && (
+        <div
+          className="terminal-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) closeTerminal()
+          }}
+        >
+          <section className="terminal-window" role="dialog" aria-modal="true" aria-labelledby="terminal-title">
+            <header className="terminal-header">
+              <div className="terminal-lights" aria-hidden="true"><i /><i /><i /></div>
+              <h2 id="terminal-title"><TerminalIcon size={14} /> secret-developer-terminal</h2>
+              <button className="terminal-close" type="button" onClick={closeTerminal} aria-label="Close terminal"><X size={17} /></button>
+            </header>
+            <div className="terminal-log" ref={logRef} aria-live="polite">
+              {history.map((entry, index) => (
+                <p className={`terminal-line terminal-line-${entry.type}`} key={`${index}-${entry.text}`}>
+                  {entry.type === 'command' && <span aria-hidden="true">$ </span>}{entry.text}
+                </p>
+              ))}
+            </div>
+            <form className="terminal-form" onSubmit={runCommand}>
+              <label htmlFor="terminal-command"><span aria-hidden="true">$</span><span className="sr-only">Enter a portfolio command</span></label>
+              <input
+                ref={inputRef}
+                id="terminal-command"
+                value={command}
+                onChange={(event) => setCommand(event.target.value)}
+                autoComplete="off"
+                autoCapitalize="none"
+                spellCheck="false"
+                aria-label="Terminal command"
+                placeholder="type a command..."
+              />
+              <button type="submit" aria-label="Run command"><ArrowRight size={15} /></button>
+            </form>
+            <footer className="terminal-footer">Portfolio shell <span>·</span> sandboxed <span>·</span> Esc to close</footer>
+          </section>
+        </div>
+      )}
+    </>
+  )
+}
+
 function App() {
   const [blossomBurst, setBlossomBurst] = useState(0)
 
   return (
     <>
+      <DeveloperTerminal onBlossom={() => setBlossomBurst((burst) => burst + 1)} />
       <CherryBlossomRain burst={blossomBurst} />
       <div className="scroll-progress" aria-hidden="true" />
       <Navbar />
