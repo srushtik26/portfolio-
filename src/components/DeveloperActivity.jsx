@@ -3,9 +3,15 @@ import { ArrowUpRight, Code2, Github, Layers3 } from 'lucide-react'
 import { profile, projects } from '../data/portfolio'
 
 const GITHUB_ACTIVITY_URL = 'https://github-contributions-api.jogruber.de/v4/srushtik26?y=last'
-const LEETCODE_ACTIVITY_URL = 'https://alfa-leetcode-api.onrender.com/userProfile/Srushtikadam26'
+const LEETCODE_PROFILE_URL = 'https://leetcode-api-pied.vercel.app/user/Srushtikadam26'
+const LEETCODE_CALENDAR_URL = (year) => `https://leetcode-api-pied.vercel.app/user/Srushtikadam26/calendar?year=${year}`
+const LEETCODE_FALLBACK_URL = 'https://leetcode-api-faisalshohag.vercel.app/Srushtikadam26'
 const CACHE_PREFIX = 'srushti-public-activity-v1:'
 const CACHE_DURATION = 30 * 60 * 1000
+
+function contributionLevel(count) {
+  return count === 0 ? 0 : count < 2 ? 1 : count < 5 ? 2 : count < 10 ? 3 : 4
+}
 
 function readCache(key) {
   try {
@@ -39,7 +45,7 @@ function normalizeGitHub(payload) {
       count: entry.count,
       level: Number.isInteger(entry.level) && entry.level >= 0 && entry.level <= 4
         ? entry.level
-        : entry.count === 0 ? 0 : entry.count < 2 ? 1 : entry.count < 5 ? 2 : entry.count < 10 ? 3 : 4,
+        : contributionLevel(entry.count),
     }))
     .sort((a, b) => a.date.localeCompare(b.date))
 
@@ -53,7 +59,19 @@ function normalizeLeetCode(payload) {
     throw new Error('LeetCode activity data did not match the expected format.')
   }
 
-  const calendar = Object.entries(payload.submissionCalendar || {})
+  let submissionCalendar = payload.submissionCalendar || {}
+  if (typeof submissionCalendar === 'string') {
+    try {
+      submissionCalendar = JSON.parse(submissionCalendar)
+    } catch (error) {
+      throw new Error('LeetCode submission calendar was not valid JSON.', { cause: error })
+    }
+  }
+  if (typeof submissionCalendar !== 'object' || Array.isArray(submissionCalendar)) {
+    throw new Error('LeetCode activity data did not include a valid submission calendar.')
+  }
+
+  const calendar = Object.entries(submissionCalendar)
     .map(([timestamp, count]) => [Number(timestamp), Number(count)])
     .filter(([timestamp, count]) => Number.isFinite(timestamp) && Number.isFinite(count) && count >= 0)
 
@@ -66,7 +84,44 @@ function normalizeLeetCode(payload) {
   }
 }
 
-function useActivityData(key, url, normalize) {
+async function fetchJson(url, signal) {
+  const response = await fetch(url, { signal })
+  if (!response.ok) throw new Error(`Activity service returned HTTP ${response.status}.`)
+  return response.json()
+}
+
+const loadGitHubActivity = async (signal) => normalizeGitHub(await fetchJson(GITHUB_ACTIVITY_URL, signal))
+
+async function loadLeetCodeActivity(signal) {
+  const year = new Date().getFullYear()
+  try {
+    const [profileData, previousCalendar, currentCalendar] = await Promise.all([
+      fetchJson(LEETCODE_PROFILE_URL, signal),
+      fetchJson(LEETCODE_CALENDAR_URL(year - 1), signal),
+      fetchJson(LEETCODE_CALENDAR_URL(year), signal),
+    ])
+    const solvedCounts = profileData?.submitStats?.acSubmissionNum
+    const solvedFor = (difficulty) => solvedCounts?.find((entry) => entry.difficulty === difficulty)?.count
+    const submissionCalendar = {
+      ...previousCalendar?.submissionCalendar,
+      ...currentCalendar?.submissionCalendar,
+    }
+
+    return normalizeLeetCode({
+      totalSolved: solvedFor('All'),
+      easySolved: solvedFor('Easy'),
+      mediumSolved: solvedFor('Medium'),
+      hardSolved: solvedFor('Hard'),
+      submissionCalendar,
+    })
+  } catch (error) {
+    if (signal.aborted) throw error
+    console.warn('Primary LeetCode activity service failed; trying the backup service.', error)
+    return normalizeLeetCode(await fetchJson(LEETCODE_FALLBACK_URL, signal))
+  }
+}
+
+function useActivityData(key, load) {
   const [state, setState] = useState(() => {
     const data = readCache(key)
     return { data, status: data ? 'cached' : 'loading' }
@@ -80,12 +135,7 @@ function useActivityData(key, url, normalize) {
       controller.abort()
     }, 9000)
 
-    fetch(url, { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) throw new Error(`Activity service returned HTTP ${response.status}.`)
-        return response.json()
-      })
-      .then(normalize)
+    load(controller.signal)
       .then((data) => {
         saveCache(key, data)
         setState({ data, status: 'live' })
@@ -108,13 +158,10 @@ function useActivityData(key, url, normalize) {
       controller.abort()
       window.clearTimeout(timeout)
     }
-  }, [key, normalize, url])
+  }, [key, load])
 
   return state
 }
-
-const normalizeGitHubData = (payload) => normalizeGitHub(payload)
-const normalizeLeetCodeData = (payload) => normalizeLeetCode(payload)
 
 function ActivityCard({ icon: Icon, title, subtitle, description, status, profileUrl, children, className = '' }) {
   return (
@@ -149,7 +196,7 @@ function ContributionGraph({ days, label }) {
   return (
     <div className="activity-calendar" role="img" aria-label={label}>
       <div className="calendar-viewport">
-        <div className="calendar-months" aria-hidden="true" style={{ gridTemplateColumns: `repeat(${weeks.length}, 6px)` }}>
+        <div className="calendar-months" aria-hidden="true" style={{ gridTemplateColumns: `repeat(${weeks.length}, var(--calendar-column-size))` }}>
           {weeks.map((week, index) => {
             const date = week.find(Boolean)?.date
             if (!date) return <span key={index} />
@@ -169,7 +216,7 @@ function ContributionGraph({ days, label }) {
                   const entry = week[dayIndex]
                   if (!entry) return <i className="calendar-cell is-empty" key={dayIndex} />
                   return <i
-                    className={`calendar-cell level-${entry.level}`}
+                    className={`calendar-cell level-${entry.level ?? contributionLevel(entry.count)}`}
                     key={entry.date}
                     title={`${entry.date}: ${entry.count} ${entry.count === 1 ? 'activity' : 'activities'}`}
                   />
@@ -185,7 +232,7 @@ function ContributionGraph({ days, label }) {
 }
 
 function GitHubCard() {
-  const { data, status } = useActivityData('github', GITHUB_ACTIVITY_URL, normalizeGitHubData)
+  const { data, status } = useActivityData('github', loadGitHubActivity)
   const repositories = projects.filter((project) => project.repository).slice(0, 2)
 
   return (
@@ -221,19 +268,24 @@ function GitHubCard() {
 }
 
 function LeetCodeCard() {
-  const { data, status } = useActivityData('leetcode', LEETCODE_ACTIVITY_URL, normalizeLeetCodeData)
-  const today = new Date()
-  const startDate = new Date(today)
-  startDate.setDate(today.getDate() - 364)
-  const startIso = startDate.toISOString().slice(0, 10)
-  const endIso = today.toISOString().slice(0, 10)
-  const days = data?.calendar
-    .map(([timestamp, count]) => ({
-      date: new Date(timestamp * 1000).toISOString().slice(0, 10),
-      count,
-    }))
-    .filter(({ date }) => date >= startIso && date <= endIso)
-    .sort((a, b) => a.date.localeCompare(b.date))
+  const { data, status } = useActivityData('leetcode', loadLeetCodeActivity)
+  const endDate = new Date()
+  const endIso = endDate.toISOString().slice(0, 10)
+  const startDate = new Date(`${endIso}T00:00:00Z`)
+  startDate.setUTCDate(startDate.getUTCDate() - 364)
+  const calendar = new Map(data?.calendar.map(([timestamp, count]) => [
+    new Date(timestamp * 1000).toISOString().slice(0, 10),
+    count,
+  ]) || [])
+  const days = data ? Array.from({ length: 365 }, (_, index) => {
+    const date = new Date(startDate)
+    date.setUTCDate(date.getUTCDate() + index)
+    const isoDate = date.toISOString().slice(0, 10)
+    const count = calendar.get(isoDate) || 0
+    return { date: isoDate, count, level: contributionLevel(count) }
+  }) : []
+  const totalSubmissions = days.reduce((total, day) => total + day.count, 0)
+  const activeDays = days.filter((day) => day.count > 0).length
 
   return (
     <ActivityCard
@@ -255,16 +307,20 @@ function LeetCodeCard() {
               <span><i className="difficulty-hard" />Hard <b>{data.hardSolved}</b></span>
             </div>
           </div>
+          <div className="leetcode-year-stats" aria-label="LeetCode activity over the last year">
+            <span><strong>{totalSubmissions}</strong> submissions</span>
+            <span><strong>{activeDays}</strong> active days</span>
+          </div>
           {days?.length ? (
             <ContributionGraph
               days={days}
-              label={`LeetCode submissions over the last year, based on ${days.length} returned activity dates.`}
+              label={`LeetCode submissions over the last year. ${totalSubmissions} submissions across ${activeDays} active days.`}
             />
           ) : (
             <div className="activity-fallback"><Code2 size={22} /><span>No submission calendar was returned for this profile.</span></div>
           )}
           <p className="activity-attribution">
-            Stats via <a href="https://alfa-leetcode-api.onrender.com/" target="_blank" rel="noreferrer">Alfa LeetCode API</a>; may be delayed.
+            Stats via <a href="https://leetcode-api-pied.vercel.app/" target="_blank" rel="noreferrer">LeetCode public profile API</a>; refreshed from the public profile.
           </p>
         </>
       ) : (

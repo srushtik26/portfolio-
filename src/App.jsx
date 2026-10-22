@@ -51,6 +51,14 @@ const skillConceptIcons = {
   Terminal: Code2,
 }
 
+const skillConceptClasses = {
+  'REST APIs': 'api',
+  'AI/ML': 'ai',
+  NLP: 'nlp',
+  Automation: 'automation',
+  Terminal: 'terminal',
+}
+
 const navLinks = [
   ['Home', 'hero'],
   ['About', 'about'],
@@ -78,7 +86,7 @@ function SkillMark({ name }) {
   const Icon = skillConceptIcons[name]
 
   return (
-    <span className={`skill-mark${logo ? '' : ' skill-mark-concept'}`} aria-hidden="true">
+    <span className={`skill-mark${logo ? '' : ` skill-mark-concept skill-mark-concept-${skillConceptClasses[name]}`}`} aria-hidden="true">
       {logo ? <img src={logo} alt="" loading="lazy" /> : Icon ? <Icon size={17} /> : null}
     </span>
   )
@@ -213,22 +221,13 @@ function Hero() {
       <div className="page-width hero-layout">
         <div className="hero-copy">
           <p className="eyebrow">Software Engineer <span>/</span> AI Enthusiast</p>
-          <h1>Building things that think.<br /><span>Engineering things that scale.</span></h1>
+          <h1>Hi, I’m<br /><span>Srushti Kadam</span></h1>
           <p className="hero-intro">
-            I’m Srushti Kadam, a software engineer exploring AI/ML, backend engineering, and
-            automation to build practical, impactful software.
+            I build practical software across AI, backend engineering, and automation.
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="#projects">Explore projects <ArrowRight size={16} /></a>
             <a className="button button-outline" href="#contact"><Mail size={15} /> Let’s connect</a>
-          </div>
-          <ul className="pill-list hero-pills" aria-label="Areas of focus">
-            {['Java', 'Spring Boot', 'AI/ML', 'Automation'].map((item) => <li key={item}>{item}</li>)}
-          </ul>
-          <div className="hero-profile-links" aria-label="Developer profiles">
-            <a href={profile.github} target="_blank" rel="noreferrer"><Github size={14} /> GitHub</a>
-            <a href={profile.leetcode} target="_blank" rel="noreferrer"><Code2 size={14} /> LeetCode</a>
-            <a href={profile.tuf} target="_blank" rel="noreferrer"><Layers3 size={14} /> Take U Forward</a>
           </div>
         </div>
         <HeroArt />

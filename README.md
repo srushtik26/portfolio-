@@ -17,7 +17,7 @@ Create a production build with `npm run build`; use `npm run preview` to inspect
 
 Edit `src/data/portfolio.js` to update profile links, projects, experience, awards, skills, or résumé configuration. A résumé file is not currently included; add the real file under `public/` and set `profile.resume` to its public path before enabling a download link.
 
-The activity section fetches GitHub contributions from GitHub Contributions API and LeetCode totals/submission calendar from Alfa LeetCode API. These are public third-party endpoints, cached for 30 minutes in the current browser session, and shown with their source noted. If a request fails, the card links to the platform profile and reports that live data is unavailable. Take U Forward has no wired public data feed; its progress is the manually maintained public-profile snapshot in `profile.tufProgress`, including a verification date.
+The activity section fetches GitHub contributions from GitHub Contributions API and LeetCode totals plus yearly calendars from public LeetCode profile APIs, with an alternate API as a fallback. These public third-party endpoints are cached for 30 minutes in the current browser session, and shown with their source noted. If a request fails, the card links to the platform profile and reports that live data is unavailable. Take U Forward has no wired public data feed; its progress is the manually maintained public-profile snapshot in `profile.tufProgress`, including a verification date.
 
 ## Assets and deployment
 
