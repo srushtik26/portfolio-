@@ -96,6 +96,49 @@ function SkillMark({ name }) {
 const skillItems = skills.flatMap(({ items }) => items)
 const currentProject = projects.find((project) => project.status === 'In progress')
 
+function CherryBlossomRain({ burst }) {
+  const [flowers, setFlowers] = useState([])
+
+  useEffect(() => {
+    if (!burst) return
+
+    const newFlowers = Array.from({ length: 18 }, (_, index) => ({
+      id: `${burst}-${index}-${Math.random().toString(36).slice(2)}`,
+      left: `${((index + Math.random()) / 18) * 100}%`,
+      top: `${-Math.random() * 12}vh`,
+      delay: `${Math.random() * 0.7}s`,
+      size: 7 + Math.random() * 4,
+      color: ['#ffc4dc', '#ff9fc8', '#ffe0eb', '#f9b8d0'][Math.floor(Math.random() * 4)],
+    }))
+
+    setFlowers((current) => [...current.slice(-126), ...newFlowers])
+  }, [burst])
+
+  return (
+    <div className="blossom-rain" aria-hidden="true">
+      {flowers.map((flower) => (
+        <span
+          className="blossom-flower"
+          key={flower.id}
+          style={{
+            left: flower.left,
+            top: flower.top,
+            width: `${flower.size}px`,
+            height: `${flower.size * 1.35}px`,
+            '--blossom-delay': flower.delay,
+            '--blossom-color': flower.color,
+          }}
+          onAnimationEnd={() => setFlowers((current) => current.filter((item) => item.id !== flower.id))}
+        >
+          <span className="blossom-shape">
+            <i /><i /><i /><i /><i /><b />
+          </span>
+        </span>
+      ))}
+    </div>
+  )
+}
+
 function Navbar() {
   const [active, setActive] = useState('hero')
   const [menuOpen, setMenuOpen] = useState(false)
@@ -217,7 +260,7 @@ function HeroArt() {
   )
 }
 
-function Hero() {
+function Hero({ onNameClick }) {
   const [featuredProject, setFeaturedProject] = useState(currentProject || projects[0])
 
   const pickAnotherProject = () => {
@@ -231,7 +274,17 @@ function Hero() {
       <div className="page-width hero-layout">
         <div className="hero-copy">
           <p className="eyebrow">Software Engineer <span>·</span> Part-time bug whisperer</p>
-          <h1>Srushti Kadam<span className="hero-title-mark">!</span></h1>
+          <h1>
+            <button
+              className="hero-name"
+              type="button"
+              aria-label="Srushti Kadam. Click for cherry blossoms."
+              title="Click for cherry blossoms"
+              onClick={onNameClick}
+            >
+              Srushti Kadam<span className="hero-title-mark">!</span>
+            </button>
+          </h1>
           <p className="hero-intro">I turn “what if?” into useful software—from AI tutors to market-news automation. Stubborn bugs occasionally join the adventure.</p>
           <div className="project-roulette">
             <div className="roulette-heading"><span><i /> SIDE-QUEST PICKER</span><span>{featuredProjectNumber} / {String(projects.length).padStart(2, '0')}</span></div>
@@ -436,12 +489,15 @@ function Contact() {
 }
 
 function App() {
+  const [blossomBurst, setBlossomBurst] = useState(0)
+
   return (
     <>
+      <CherryBlossomRain burst={blossomBurst} />
       <div className="scroll-progress" aria-hidden="true" />
       <Navbar />
       <main>
-        <Hero />
+        <Hero onNameClick={() => setBlossomBurst((burst) => burst + 1)} />
         <Highlights />
         <Projects />
         <DeveloperActivity />
