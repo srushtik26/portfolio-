@@ -14,6 +14,7 @@ import {
   Mail,
   MapPin,
   Menu,
+  Shuffle,
   Sparkles,
   Trophy,
   X,
@@ -93,6 +94,7 @@ function SkillMark({ name }) {
 }
 
 const skillItems = skills.flatMap(({ items }) => items)
+const currentProject = projects.find((project) => project.status === 'In progress')
 
 function Navbar() {
   const [active, setActive] = useState('hero')
@@ -209,25 +211,45 @@ function HeroArt() {
         </svg>
       </div>
       <Suspense fallback={null}><HeroScene /></Suspense>
-      <span className="hero-scene-tag"><i /> 3D CODING STUDIO</span>
-      <p className="art-caption">CREATE<br />LEARN<br />REPEAT</p>
+      <span className="hero-scene-tag"><i /> BUG WHISPERER AT WORK</span>
+      <p className="art-caption">IDEAS WELCOME<br />BUGS NOT SO MUCH</p>
     </div>
   )
 }
 
 function Hero() {
+  const [featuredProject, setFeaturedProject] = useState(currentProject || projects[0])
+
+  const pickAnotherProject = () => {
+    const alternatives = projects.filter((project) => project.name !== featuredProject.name)
+    setFeaturedProject(alternatives[Math.floor(Math.random() * alternatives.length)])
+  }
+  const featuredProjectNumber = String(projects.indexOf(featuredProject) + 1).padStart(2, '0')
+
   return (
     <section id="hero" className="hero section-anchor">
       <div className="page-width hero-layout">
         <div className="hero-copy">
-          <p className="eyebrow">Software Engineer <span>/</span> AI Enthusiast</p>
-          <h1>Hi, I’m<br /><span>Srushti Kadam</span></h1>
-          <p className="hero-intro">
-            I build practical software across AI, backend engineering, and automation.
-          </p>
+          <p className="eyebrow">Software Engineer <span>·</span> Part-time bug whisperer</p>
+          <h1>Srushti Kadam<span className="hero-title-mark">!</span></h1>
+          <p className="hero-intro">I turn “what if?” into useful software—from AI tutors to market-news automation. Stubborn bugs occasionally join the adventure.</p>
+          <div className="project-roulette">
+            <div className="roulette-heading"><span><i /> SIDE-QUEST PICKER</span><span>{featuredProjectNumber} / {String(projects.length).padStart(2, '0')}</span></div>
+            <a className="current-build-note" href="#projects">
+              <span className="current-build-index">TODAY’S<br />ADVENTURE</span>
+              <span className="current-build-copy">
+                <strong>{featuredProject.name}</strong>
+                <small>{featuredProject.description}</small>
+              </span>
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </a>
+            <button className="roulette-button" type="button" onClick={pickAnotherProject}>
+              <Shuffle size={13} /> Deal me another
+            </button>
+          </div>
           <div className="hero-actions">
-            <a className="button button-primary" href="#projects">Explore projects <ArrowRight size={16} /></a>
-            <a className="button button-outline" href="#contact"><Mail size={15} /> Let’s connect</a>
+            <a className="button button-primary" href="#projects">Explore my builds <ArrowRight size={16} /></a>
+            <a className="button button-outline" href="#contact"><Mail size={15} /> Say hello</a>
           </div>
         </div>
         <HeroArt />
@@ -242,15 +264,15 @@ function Highlights() {
       <div className="page-width highlight-grid">
         <div className="highlight-item">
           <Trophy aria-hidden="true" />
-          <div><strong>Hackathon</strong><span>Recognized for project work</span></div>
+          <div><span>RECENT WIN</span><strong>HackAura · 1st place</strong></div>
         </div>
         <div className="highlight-item">
           <BrainCircuit aria-hidden="true" />
-          <div><strong>AI + SWE</strong><span>Core interests</span></div>
+          <div><span>WORKING AT</span><strong>Plutus Wealth Management</strong></div>
         </div>
         <div className="highlight-item">
           <MapPin aria-hidden="true" />
-          <div><strong>Mumbai</strong><span>India</span></div>
+          <div><span>BASED IN</span><strong>Mumbai, India</strong></div>
         </div>
       </div>
     </section>
