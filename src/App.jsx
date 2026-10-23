@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { Component, lazy, Suspense, useEffect, useRef, useState } from 'react'
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -25,6 +25,7 @@ import DeveloperActivity from './components/DeveloperActivity'
 import AboutPortrait from './components/AboutPortrait'
 import ProjectVisual from './components/ProjectVisual'
 
+const RealisticGirlCoder = lazy(() => import('./components/RealisticGirlCoder'))
 const HeroScene = lazy(() => import('./components/HeroScene'))
 
 const skillLogos = {
@@ -202,6 +203,23 @@ function Navbar() {
   )
 }
 
+class SceneErrorBoundary extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+  componentDidCatch(error) {
+    console.warn('Hero 3D scene error, falling back to static artwork:', error)
+  }
+  render() {
+    if (this.state.hasError) return null
+    return this.props.children
+  }
+}
+
 function HeroArt() {
   return (
     <div className="hero-art" aria-hidden="true">
@@ -254,7 +272,11 @@ function HeroArt() {
           <circle cx="108" cy="126" r="2" fill="#ff8fc7" /><circle cx="382" cy="130" r="2" fill="#79d4ea" />
         </svg>
       </div>
-      <Suspense fallback={null}><HeroScene /></Suspense>
+      <SceneErrorBoundary>
+        <Suspense fallback={null}>
+          <RealisticGirlCoder />
+        </Suspense>
+      </SceneErrorBoundary>
       <span className="hero-scene-tag"><i /> BUG WHISPERER AT WORK</span>
       <p className="art-caption">IDEAS WELCOME<br />BUGS NOT SO MUCH</p>
     </div>

@@ -197,6 +197,71 @@ h1, h2, h3, p { margin-top: 0; }
 .hero-scene-tag i { width: 5px; height: 5px; border-radius: 50%; background: #ff67ac; box-shadow: 0 0 8px #ff4c9f; }
 .art-caption { position: absolute; z-index: 3; right: 12px; bottom: 9px; margin: 0; color: #d4aec7; font: 8px/1.6 var(--mono); letter-spacing: .12em; text-align: right; text-shadow: 0 1px 8px #08070a; }
 
+.coder-view-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 5px;
+  background: rgba(13, 9, 20, 0.88);
+  border: 1px solid rgba(255, 63, 157, 0.32);
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+}
+.coder-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  font: 9px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  color: #d4aec7;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+.coder-view-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.coder-view-btn.active {
+  color: #fff;
+  background: linear-gradient(135deg, #ff3f9d 0%, #ad216a 100%);
+  box-shadow: 0 2px 10px rgba(255, 63, 157, 0.45);
+  font-weight: 600;
+}
+.coder-view-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 63, 157, 0.6);
+  transition: all 0.2s ease;
+}
+.coder-view-btn.active .coder-view-dot {
+  background: #fff;
+  box-shadow: 0 0 6px #fff;
+}
+@media (max-width: 600px) {
+  .coder-view-controls {
+    bottom: 6px;
+    left: 6px;
+    gap: 2px;
+    padding: 2px 3px;
+  }
+  .coder-view-btn {
+    padding: 3px 6px;
+    font-size: 8px;
+  }
+}
+
 .highlights { border-block: 1px solid var(--line); background: linear-gradient(90deg, rgba(255,63,157,.025), transparent 34%, transparent 66%, rgba(255,63,157,.025)); }
 .highlight-grid { min-height: 76px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; }
 .highlight-item { min-width: 0; min-height: 40px; display: flex; align-items: center; gap: 11px; padding: 4px 18px; }
