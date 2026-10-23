@@ -18,7 +18,7 @@ export default function RealisticGirlCoder({
   className = "w-full h-[520px] md:h-[620px]",
   modelUrl = "/girl-coder.glb",
   accentColor = "#ff2a85",
-  viewMode = "full",
+  viewMode = "portrait",
   rotationAngle = -0.95,
   autoRotate = false
 }) {
@@ -37,7 +37,8 @@ export default function RealisticGirlCoder({
   });
 
   const [loading, setLoading] = useState(true);
-  const [currentView, setCurrentView] = useState(viewMode || 'full');
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [currentView, setCurrentView] = useState(viewMode || 'portrait');
 
   useEffect(() => {
     if (viewMode) setCurrentView(viewMode);
@@ -100,7 +101,7 @@ export default function RealisticGirlCoder({
 
     // 2. CAMERA
     const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 40);
-    camera.position.set(0, 1.35, 2.7);
+    camera.position.set(0.46, 1.16, 1.35);
     stateRef.current.camera = camera;
 
     // 3. RENDERER
@@ -124,7 +125,7 @@ export default function RealisticGirlCoder({
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.target.set(0, 0.78, 0.1);
+    controls.target.set(0, 0.94, 0.18);
     controls.maxPolarAngle = Math.PI / 2 + 0.04;
     controls.minPolarAngle = Math.PI / 6;
     controls.minDistance = 1.0;
@@ -642,7 +643,12 @@ export default function RealisticGirlCoder({
         setLoading(false);
         stateRef.current.isLoaded = true;
       },
-      undefined,
+      (xhr) => {
+        if (xhr.lengthComputable && xhr.total > 0) {
+          const percent = Math.min(100, Math.round((xhr.loaded / xhr.total) * 100));
+          setLoadProgress(percent);
+        }
+      },
       (err) => {
         console.error('Failed to load 3D avatar:', err);
         setLoading(false);
@@ -887,11 +893,19 @@ export default function RealisticGirlCoder({
       </div>
 
       {loading && (
-        <div className="absolute inset-0 bg-[#08070a]/70 backdrop-blur-sm flex flex-col items-center justify-center gap-3 text-slate-300">
-          <div className="w-7 h-7 border-2 border-[#ff2a85] border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs font-mono tracking-wider text-slate-400">
-            Aligning hands on keyboard...
-          </span>
+        <div className="absolute inset-0 bg-[#08070a]/75 backdrop-blur-sm flex flex-col items-center justify-center gap-3 text-slate-300 z-20">
+          <div className="w-8 h-8 border-2 border-[#ff3f9d] border-t-transparent rounded-full animate-spin" />
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-xs font-mono tracking-wider text-slate-300">
+              Aligning hands on keyboard... {loadProgress > 0 ? `${loadProgress}%` : ''}
+            </span>
+            <div className="w-36 h-1 bg-white/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-[#ff3f9d] to-[#fa70b1] transition-all duration-150"
+                style={{ width: `${Math.max(6, loadProgress)}%` }}
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>

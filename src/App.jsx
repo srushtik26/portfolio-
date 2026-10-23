@@ -274,7 +274,7 @@ function HeroArt() {
       </div>
       <SceneErrorBoundary>
         <Suspense fallback={null}>
-          <RealisticGirlCoder />
+          <RealisticGirlCoder viewMode="portrait" />
         </Suspense>
       </SceneErrorBoundary>
       <span className="hero-scene-tag"><i /> BUG WHISPERER AT WORK</span>
